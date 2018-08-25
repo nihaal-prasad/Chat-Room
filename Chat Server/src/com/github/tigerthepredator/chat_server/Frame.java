@@ -4,6 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +25,9 @@ import javax.swing.text.StyleContext;
 public class Frame extends JFrame {
     // IDK why I need this, but eclipse gives me a warning if I don't have it
     private static final long serialVersionUID = 4185788286557260974L;
+
+    private File log; // The log file will contain all the auditing information
+    private PrintWriter logWriter; // Print writer for the log file
 
     private JPanel panel; // Panel for everything
     private JTextPane messages; // Text pane for all of the chat messages
@@ -53,9 +62,17 @@ public class Frame extends JFrame {
 
         // Add our panel
         add(panel);
+        
+        try {
+            // Initialize the log file
+            log = File.createTempFile("chat_server", ".log");
+            logWriter = new PrintWriter(log);
+            display(("Log file created at " + log.getAbsolutePath()), Color.DARK_GRAY);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
-    // TODO: Log something whenever something is displayed
     // Displays something onto the text area
     public void display(String message, Color c) {
         // Get the caret position of the text pane
@@ -76,5 +93,12 @@ public class Frame extends JFrame {
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
+        
+        // Log whatever was displayed
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date dateobj = new Date();
+        logWriter.println(message + "\n@ " + df.format(dateobj));
+        logWriter.println();
+        logWriter.flush();
     }
 }

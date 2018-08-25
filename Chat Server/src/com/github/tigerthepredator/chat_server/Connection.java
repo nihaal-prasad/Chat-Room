@@ -16,9 +16,6 @@ public class Connection implements Runnable {
     private BufferedReader in; // Used to read data from client
     private boolean running; // Used to determine whether this connection is running or not
 
-    // TODO: Add encryption
-    // TODO: Associate each connection with a particular color
-
     // Constructor
     public Connection(Socket s) throws IOException {
         // Broadcast a message to everyone
