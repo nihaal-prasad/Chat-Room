@@ -1,4 +1,4 @@
-package com.github.tigerthepredator.chat_client;
+package chat_client;
 
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -16,9 +16,6 @@ public class Client {
     private static BufferedReader in; // Used to read data from server
     private static Encryptor encryptor; // Used to encrypt/decrypt data
 
-    // TODO: Add encryption
-    // TODO: Add colors
-
     // Main method
     public static void main(String args[]) {
         try {
@@ -31,7 +28,7 @@ public class Client {
 
             // Create the frame
             frame = new Frame(username);
-            frame.setTitle("   TigerThePredator's Chat Client   ");
+            frame.setTitle("   Chat Client   ");
             frame.setSize(350, 350);
             frame.setResizable(true);
             frame.setDefaultCloseOperation(Frame.EXIT_ON_CLOSE);

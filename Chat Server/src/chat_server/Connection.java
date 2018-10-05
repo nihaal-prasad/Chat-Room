@@ -1,4 +1,4 @@
-package com.github.tigerthepredator.chat_server;
+package chat_server;
 
 import java.awt.Color;
 import java.io.BufferedReader;

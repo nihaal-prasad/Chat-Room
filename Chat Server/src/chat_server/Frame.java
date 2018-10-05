@@ -1,9 +1,15 @@
-package com.github.tigerthepredator.chat_client;
+package chat_server;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,13 +26,15 @@ public class Frame extends JFrame {
     // IDK why I need this, but eclipse gives me a warning if I don't have it
     private static final long serialVersionUID = 4185788286557260974L;
 
+    private File log; // The log file will contain all the auditing information
+    private PrintWriter logWriter; // Print writer for the log file
+
     private JPanel panel; // Panel for everything
     private JTextPane messages; // Text pane for all of the chat messages
     private JTextField typeField; // Text field for typing out messages
-    private Color userColor; // The user's specific color
 
     // Constructor
-    public Frame(String username) {
+    public Frame() {
         // Initialize the messages component
         messages = new JTextPane();
         messages.setEditable(false);
@@ -37,8 +45,9 @@ public class Frame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!typeField.getText().equals("")) {
                     // Get the text, display it, and broadcast it
-                    String text = username + "> " + typeField.getText();
-                    Client.send(text, userColor);
+                    String text = "Server> " + typeField.getText();
+                    display(text, Color.RED);
+                    Server.broadcast(text, Color.RED);
 
                     // Erase the text
                     typeField.setText("");
@@ -53,9 +62,16 @@ public class Frame extends JFrame {
 
         // Add our panel
         add(panel);
+        
+        try {
+            // Initialize the log file
+            log = File.createTempFile("chat_server", ".log");
+            logWriter = new PrintWriter(log);
+            display(("Log file created at " + log.getAbsolutePath()), Color.DARK_GRAY);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
-
-    // TODO: Log something whenever something is displayed
 
     // Displays something onto the text area
     public void display(String message, Color c) {
@@ -77,10 +93,12 @@ public class Frame extends JFrame {
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-    }
-
-    // Change the color of the user
-    public void setUserColor(Color c) {
-        userColor = c;
+        
+        // Log whatever was displayed
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date dateobj = new Date();
+        logWriter.println(message + "\n@ " + df.format(dateobj));
+        logWriter.println();
+        logWriter.flush();
     }
 }

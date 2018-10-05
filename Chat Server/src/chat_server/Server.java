@@ -1,4 +1,4 @@
-package com.github.tigerthepredator.chat_server;
+package chat_server;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class Server {
 
             // Create the frame
             frame = new Frame();
-            frame.setTitle("   TigerThePredator's Chat Server   ");
+            frame.setTitle("   Chat Server   ");
             frame.setSize(350, 350);
             frame.setResizable(true);
             frame.setDefaultCloseOperation(Frame.EXIT_ON_CLOSE);

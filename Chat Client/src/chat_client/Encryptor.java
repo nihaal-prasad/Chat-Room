@@ -1,4 +1,4 @@
-package com.github.tigerthepredator.chat_client;
+package chat_client;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
